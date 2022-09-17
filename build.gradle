@@ -6,10 +6,18 @@ plugins {
 group = 'io.github.petals'
 version = '0.1'
 
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
 subprojects {
     apply plugin: 'java-library'
 
-    if (delegate.name.endsWith 'api') {
+    def p = delegate.name
+
+    if (p.endsWith 'api') {
         apply plugin: 'maven-publish'
 
         publishing {
@@ -21,6 +29,10 @@ subprojects {
                     from components.java
                 }
             }
+        }
+    } else {
+        dependencies {
+            implementation project(""":${p.replace('impl', 'api')}""")
         }
     }
 

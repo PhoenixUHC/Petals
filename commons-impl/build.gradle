@@ -1,0 +1,16 @@
+plugins {
+    id 'groovy'
+}
+
+sourceSets {
+    main {
+        java { srcDirs = [] }
+        groovy { srcDirs += ['src/main/groovy', 'src/main/java'] }
+    }
+}
+
+dependencies {
+    implementation 'org.codehaus.groovy:groovy-all:2.4.15'
+    implementation 'redis.clients:jedis:4.2.0'
+}
+
