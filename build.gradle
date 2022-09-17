@@ -1,0 +1,37 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+group = 'io.github.petals'
+version = '0.1'
+
+subprojects {
+    apply plugin: 'java-library'
+
+    if (delegate.name.endsWith 'api') {
+        apply plugin: 'maven-publish'
+
+        publishing {
+            publications {
+                maven(MavenPublication) {
+                    groupId = rootProject.group
+                    artifactId = delegate.name
+
+                    from components.java
+                }
+            }
+        }
+    }
+
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(8))
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+}
+

@@ -1,0 +1,3 @@
+rootProject.name = 'petals'
+['commons'].each { module -> ['api', 'impl'].each { kind -> include """$module-$kind""" } }
+
