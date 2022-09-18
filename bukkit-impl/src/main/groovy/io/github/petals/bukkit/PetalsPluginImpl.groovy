@@ -18,5 +18,9 @@ class PetalsPluginImpl extends JavaPlugin implements PetalsPlugin {
     void onEnable() {
         this.pooled = new JedisPooled("127.0.0.1", 6379);
     }
+
+    void onDisable() {
+        this.petals().games().each { it.delete() };
+    }
 }
 

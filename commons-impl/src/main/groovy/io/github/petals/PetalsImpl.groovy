@@ -12,20 +12,21 @@ class PetalsImpl implements Petals {
         this.pooled = pooled;
     }
 
-    public Set<PetalsGameImpl> games() {
+    Set<PetalsGameImpl> games() {
         return this.pooled
-            .stream()
-            .map { new PetalsGameImpl(it, this.pooled) }
-            .collect(Collectors.toSet());
+            .smembers("games")
+            .collect { new PetalsGameImpl(it, this.pooled) }
     }
 
-    public <T extends PetalsGameImpl> Set<T> games(Class<T> clazz) {
-        return new HashSet<>();
-    }
+    PetalsGameImpl createGame() {
+        def uniqueId = UUID.randomUUID().toString();
 
-    public <T extends PetalsGameImpl> T createGame(Class<T> clazz) {
-        PetalsGameImpl g = new PetalsGameImpl(this.pooled);
-        return g;
+        def game = new PetalsGameImpl(uniqueId, this.pooled);
+        game.start = -1
+
+        this.pooled.sadd("games", uniqueId);
+
+        return game;
     }
 }
 
