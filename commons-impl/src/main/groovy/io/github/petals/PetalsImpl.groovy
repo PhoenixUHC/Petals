@@ -1,14 +1,25 @@
 package io.github.petals;
 
-import io.github.petals.api.*;
-import io.github.petals.api.structures.*;
+import io.github.petals.api.Petals;
+import io.github.petals.structures.*;
+
+import redis.clients.jedis.JedisPooled;
 
 class PetalsImpl implements Petals {
-    public Set<PetalsGame> games() {
-        return new HashSet<>();
+    JedisPooled pooled;
+
+    PetalsImpl(pooled) {
+        this.pooled = pooled;
     }
 
-    public <T extends PetalsGame> Set<T> games(Class<T> clazz) {
+    public Set<PetalsGameImpl> games() {
+        return this.pooled
+            .stream()
+            .map { new PetalsGameImpl(it, this.pooled) }
+            .collect(Collectors.toSet());
+    }
+
+    public <T extends PetalsGameImpl> Set<T> games(Class<T> clazz) {
         return new HashSet<>();
     }
 }

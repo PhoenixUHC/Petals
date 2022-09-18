@@ -12,6 +12,8 @@ version = '0.1'
 allprojects {
     repositories {
         mavenCentral()
+        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 }
 
@@ -22,11 +24,17 @@ subprojects {
         apply plugin: 'java-library'
         apply plugin: 'maven-publish'
 
+        java {
+            withSourcesJar()
+            withJavadocJar()
+        }
+
         publishing {
             publications {
                 maven(MavenPublication) {
                     groupId = rootProject.group
-                    artifactId = delegate.name
+                    version = rootProject.version
+                    artifactId = p
 
                     from components.java
                 }
