@@ -1,4 +1,8 @@
 dependencies {
+    implementation project(':commons-api')
+    implementation project(':commons-impl')
+    implementation project(':bukkit-api')
+
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
 }
 

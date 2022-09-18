@@ -22,5 +22,10 @@ class PetalsImpl implements Petals {
     public <T extends PetalsGameImpl> Set<T> games(Class<T> clazz) {
         return new HashSet<>();
     }
+
+    public <T extends PetalsGameImpl> T createGame(Class<T> clazz) {
+        PetalsGameImpl g = new PetalsGameImpl(this.pooled);
+        return g;
+    }
 }
 

@@ -1,5 +1,5 @@
 dependencies {
-    api project(':commons-api')
+    implementation project(':commons-api')
 
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
 }

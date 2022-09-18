@@ -14,5 +14,9 @@ class PetalsGameImpl implements PetalsGame {
     boolean running() {
         return time() > -1;
     }
+
+    def invokeMethod(String methodName, Object args) {
+        println "called $methodName"
+    }
 }
 
