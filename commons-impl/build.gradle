@@ -1,11 +1,6 @@
-plugins {
-    id 'groovy'
-}
-
 sourceSets {
     main {
-        java { srcDirs = [] }
-        groovy { srcDirs += ['src/main/groovy', 'src/main/java'] }
+        groovy { srcDirs += ['src/main/groovy'] }
     }
 }
 

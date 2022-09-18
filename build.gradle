@@ -1,6 +1,9 @@
 plugins {
+    id 'groovy'
     id 'java-library'
     id 'maven-publish'
+
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group = 'io.github.petals'
@@ -13,11 +16,10 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'java-library'
-
     def p = delegate.name
 
     if (p.endsWith 'api') {
+        apply plugin: 'java-library'
         apply plugin: 'maven-publish'
 
         publishing {
@@ -31,8 +33,11 @@ subprojects {
             }
         }
     } else {
+        apply plugin: 'groovy'
+        apply plugin: 'com.github.johnrengelman.shadow'
+
         dependencies {
-            implementation project(""":${p.replace('impl', 'api')}""")
+            implementation project(":${p.replace('impl', 'api')}")
         }
     }
 
