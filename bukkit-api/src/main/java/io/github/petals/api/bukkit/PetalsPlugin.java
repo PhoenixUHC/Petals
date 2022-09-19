@@ -1,9 +1,11 @@
 package io.github.petals.api.bukkit;
 
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import io.github.petals.api.Petals;
+import io.github.petals.api.structures.PetalsGame;
 
 /**
  * The Petals Bukkit plugin.
@@ -15,7 +17,13 @@ public interface PetalsPlugin extends Plugin {
         return plugin == null ? null : (PetalsPlugin) plugin;
     }
 
-    /** @return an instance of the Petals API object. */
-    Petals petals();
+    /** @return each game currently stored on the database. */
+    Set<PetalsGame> games();
+    /**
+     * Creates a Petals game and returns it.
+     *
+     * @return the new game.
+     */
+    PetalsGame createGame();
 }
 
