@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * Petals game representation.
  */
-public interface PetalsGame {
+public interface PetalsGame extends PetalsBase {
     /** @return whether the game is running. */
     boolean running();
     /** @return a set of players participating in the game. */
