@@ -1,6 +1,6 @@
 package io.github.petals.bukkit.structures;
 
-class PetalsGameImpl extends io.github.petals.structures.PetalsGameImpl {
+class PetalsGameImpl extends io.github.petals.structures.PetalsGameImpl implements io.github.petals.api.bukkit.structures.PetalsGame {
     PetalsGameImpl(uniqueId, pooled) {
         super(uniqueId, pooled);
     }

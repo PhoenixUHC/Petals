@@ -5,7 +5,7 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import io.github.petals.api.structures.PetalsGame;
+import io.github.petals.api.bukkit.structures.PetalsGame;
 
 /**
  * The Petals Bukkit plugin.
