@@ -1,5 +1,4 @@
 dependencies {
-    implementation project(':commons-api')
     implementation project(':commons-impl')
     implementation project(':bukkit-api')
 
