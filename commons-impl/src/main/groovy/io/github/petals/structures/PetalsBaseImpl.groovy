@@ -8,17 +8,17 @@ class PetalsBaseImpl implements PetalsBase {
     private String uniqueId;
     protected JedisPooled pooled;
 
-    PetalsBaseImpl(uniqueId, pooled) {
+    PetalsBaseImpl(String uniqueId, JedisPooled pooled) {
         this.uniqueId = uniqueId;
         this.pooled = pooled;
     }
 
     String uniqueId() {
-        return this.uniqueId;
+        this.uniqueId;
     }
 
     boolean exists() {
-        return this.pooled.hexists(this.uniqueId);
+        this.pooled.exists(this.uniqueId);
     }
 
     void delete() {

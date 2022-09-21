@@ -1,7 +1,9 @@
 package io.github.petals.structures;
 
+import redis.clients.jedis.JedisPooled;
+
 class PetalsPlayerImpl extends PetalsBaseImpl {
-    PetalsPlayerImpl(uniqueId, pooled) {
+    PetalsPlayerImpl(uniqueId, JedisPooled pooled) {
         super(uniqueId, pooled);
     }
 

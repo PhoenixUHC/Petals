@@ -1,14 +1,16 @@
 package io.github.petals.bukkit.structures;
 
+import redis.clients.jedis.JedisPooled;
+
 class PetalsGameImpl extends io.github.petals.structures.PetalsGameImpl implements io.github.petals.api.bukkit.structures.PetalsGame {
-    PetalsGameImpl(uniqueId, pooled) {
+    PetalsGameImpl(uniqueId, JedisPooled pooled) {
         super(uniqueId, pooled);
     }
 
     Set<PetalsPlayerImpl> players() {
-        return pooled
-            .smembers("$uniqueId:players")
-            .collect { new PetalsPlayerImpl(it, pooled) };
+        new HashSet(
+            pooled.smembers("$uniqueId:players").collect { new PetalsPlayerImpl(it, pooled) }
+        );
     }
 
     PetalsPlayerImpl addPlayer(String uniqueId) {

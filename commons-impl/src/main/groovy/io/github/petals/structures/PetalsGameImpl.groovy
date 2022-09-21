@@ -4,14 +4,16 @@ import io.github.petals.structures.PetalsGameImpl
 
 import io.github.petals.api.structures.*;
 
+import redis.clients.jedis.JedisPooled;
+
 class PetalsGameImpl extends PetalsBaseImpl implements PetalsGame {
-    static Set<PetalsGameImpl> games(pooled) {
-        return pooled
-            .smembers("games")
-            .collect { new PetalsGameImpl(it, pooled) }
+    static Set<PetalsGameImpl> games(JedisPooled pooled) {
+        new HashSet(
+            pooled.smembers("games").collect { new PetalsGameImpl(it, pooled) }
+        )
     }
 
-    static PetalsGameImpl create(pooled) {
+    static PetalsGameImpl create(JedisPooled pooled) {
         def uniqueId = UUID.randomUUID().toString();
 
         def game = new PetalsGameImpl(uniqueId, pooled);
@@ -22,12 +24,16 @@ class PetalsGameImpl extends PetalsBaseImpl implements PetalsGame {
         return game;
     }
 
-    PetalsGameImpl(uniqueId, pooled) {
+    PetalsGameImpl(String uniqueId, JedisPooled pooled) {
         super(uniqueId, pooled);
     }
 
+    long time() {
+        System.currentTimeMillis() - this.start;
+    }
+
     boolean running() {
-        return time() > -1;
+        this.start > -1;
     }
 
     void delete() {
@@ -38,8 +44,9 @@ class PetalsGameImpl extends PetalsBaseImpl implements PetalsGame {
     }
 
     Set<PetalsPlayerImpl> players() {
-        return pooled.smembers("$uniqueId:players")
-            .collect { new PetalsPlayerImpl(pooled, uniqueId) };
+        new HashSet(
+            pooled.smembers("$uniqueId:players").collect { new PetalsPlayerImpl(pooled, uniqueId) }
+        );
     }
 
     PetalsPlayerImpl addPlayer(String uniqueId) {

@@ -19,8 +19,9 @@ class PetalsPluginImpl extends JavaPlugin implements PetalsPlugin {
     }
 
     Set<PetalsGameImpl> games() {
-        return pooled.smembers("games")
-            .collect { new PetalsGameImpl(it, pooled) };
+        new HashSet(
+            pooled.smembers("games").collect { new PetalsGameImpl(it, pooled) }
+        );
     }
 
     PetalsGameImpl createGame() {
