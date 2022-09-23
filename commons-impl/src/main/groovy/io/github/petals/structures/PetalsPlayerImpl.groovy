@@ -1,17 +1,20 @@
 package io.github.petals.structures;
 
+import groovy.transform.CompileStatic;
+
 import redis.clients.jedis.JedisPooled;
 
+@CompileStatic
 class PetalsPlayerImpl extends PetalsBaseImpl {
-    PetalsPlayerImpl(uniqueId, JedisPooled pooled) {
+    PetalsPlayerImpl(String uniqueId, JedisPooled pooled) {
         super(uniqueId, pooled);
     }
 
     void delete() {
-        def gameId = pooled.hget(uniqueId, "game");
+        def gameId = pooled.hget(this.uniqueId(), "game");
 
-        pooled.srem("$gameId:players", uniqueId);
-        pooled.srem("players", uniqueId);
+        pooled.srem("$gameId:players", this.uniqueId());
+        pooled.srem("players", this.uniqueId());
         super.delete();
     }
 }

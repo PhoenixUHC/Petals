@@ -1,9 +1,12 @@
 package io.github.petals.structures;
 
+import groovy.transform.CompileStatic;
+
 import io.github.petals.api.structures.*;
 
 import redis.clients.jedis.JedisPooled;
 
+@CompileStatic
 class PetalsBaseImpl implements PetalsBase {
     private String uniqueId;
     protected JedisPooled pooled;

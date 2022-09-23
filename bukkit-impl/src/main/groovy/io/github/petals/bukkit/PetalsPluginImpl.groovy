@@ -1,5 +1,7 @@
 package io.github.petals.bukkit;
 
+import groovy.transform.CompileStatic;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.petals.api.bukkit.PetalsPlugin;
@@ -7,6 +9,7 @@ import io.github.petals.bukkit.structures.PetalsGameImpl;
 
 import redis.clients.jedis.JedisPooled;
 
+@CompileStatic
 class PetalsPluginImpl extends JavaPlugin implements PetalsPlugin {
     private JedisPooled pooled;
 
