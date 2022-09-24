@@ -1,5 +1,6 @@
 package io.github.petals.api.bukkit;
 
+import java.util.Optional;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -17,13 +18,19 @@ public interface PetalsPlugin extends Plugin {
         return plugin == null ? null : (PetalsPlugin) plugin;
     }
 
+    /** @return the current game for this Bukkit server. */
+    public static Optional<PetalsGame> game() {
+        final PetalsPlugin plugin = PetalsPlugin.instance();
+        return plugin.game(plugin.gameId().orElse(null));
+    }
+
     /** @return each game currently stored on the database. */
     Set<PetalsGame> games();
-    /**
-     * Creates a Petals game and returns it.
-     *
-     * @return the new game.
-     */
-    PetalsGame createGame();
+
+    /** @return the game associated with the given uniqueId. */
+    Optional<PetalsGame> game(String uniqueId);
+
+    /** @return the current game identifier */
+    Optional<String> gameId();
 }
 

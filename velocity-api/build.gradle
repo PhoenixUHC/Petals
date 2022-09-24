@@ -1,0 +1,6 @@
+dependencies {
+    api project(':commons-api')
+
+    compileOnly 'com.velocitypowered:velocity-api:3.0.1'
+}
+

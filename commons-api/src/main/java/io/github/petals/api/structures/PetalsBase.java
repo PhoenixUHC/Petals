@@ -10,5 +10,20 @@ public interface PetalsBase {
     boolean exists();
     /** Deletes this Petals object from the database. */
     void delete();
+
+    /**
+     * Finds a value associated with the given key from the database.
+     *
+     * @param name the key.
+     * @return the value.
+     */
+    Object getProperty(String name);
+    /**
+     * Assigns a value to the given key on the database.
+     *
+     * @param name the key.
+     * @param object the value.
+     */
+    void setProperty(String name, Object object);
 }
 

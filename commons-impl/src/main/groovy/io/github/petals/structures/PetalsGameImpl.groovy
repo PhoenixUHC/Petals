@@ -17,18 +17,6 @@ class PetalsGameImpl extends PetalsBaseImpl implements PetalsGame {
         )
     }
 
-    @CompileStatic(SKIP)
-    static PetalsGameImpl create(JedisPooled pooled) {
-        def uniqueId = UUID.randomUUID().toString();
-
-        def game = new PetalsGameImpl(uniqueId, pooled);
-        game.start = -1
-
-        pooled.sadd("games", uniqueId);
-
-        return game;
-    }
-
     PetalsGameImpl(String uniqueId, JedisPooled pooled) {
         super(uniqueId, pooled);
     }
