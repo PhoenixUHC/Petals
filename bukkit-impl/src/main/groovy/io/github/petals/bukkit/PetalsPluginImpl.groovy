@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import java.nio.ByteBuffer;
+import com.google.common.io.*;
 
 import io.github.petals.api.bukkit.PetalsPlugin;
 import io.github.petals.bukkit.structures.PetalsGameImpl;
@@ -30,11 +30,10 @@ class PetalsPluginImpl extends JavaPlugin implements PetalsPlugin, PluginMessage
     void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
         if (!channel.equals("petals:channel")) return;
 
-        switch (bytes[0]) {
+        ByteArrayDataInput buffer = ByteStreams.newDataInput(bytes);
+        switch (buffer.readByte()) {
             case 0:
-                byte[] uuid = Arrays.copyOfRange(bytes, 1, 17);
-                ByteBuffer buffer = ByteBuffer.wrap(uuid);
-                this.gameId = new UUID(buffer.getLong(), buffer.getLong()).toString();
+                this.gameId = new UUID(buffer.readLong(), buffer.readLong()).toString();
                 break;
         }
     }

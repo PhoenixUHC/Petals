@@ -5,12 +5,15 @@ import static groovy.transform.TypeCheckingMode.*;
 
 import java.util.logging.Logger;
 
+import com.google.common.io.*;
+
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
+import com.velocitypowered.api.proxy.messages.LegacyChannelIdentifier;
 
 import io.github.petals.api.velocity.PetalsPlugin;
 import io.github.petals.velocity.structures.PetalsGameImpl;
@@ -32,6 +35,7 @@ class PetalsPluginImpl implements PetalsPlugin {
 
     @Subscribe
     void onProxyInitialization(ProxyInitializeEvent event) {
+        this.proxy.commandManager.register(new PetalsCommand(this).createPetalsCommand());
     }
 
     Set<PetalsGameImpl> games() {
@@ -40,12 +44,19 @@ class PetalsPluginImpl implements PetalsPlugin {
 
     @CompileStatic(SKIP)
     PetalsGameImpl createGame(RegisteredServer server) {
-        String uniqueId = server.getServerInfo().getName();
+        UUID uuid = UUID.randomUUID();
+        String uniqueId = uuid.toString();
 
         PetalsGameImpl game = new PetalsGameImpl(uniqueId, this);
         game.start = -1
 
         pooled.sadd("games", uniqueId);
+
+        ByteArrayDataOutput buffer = ByteStreams.newDataOutput();
+        buffer.writeByte(0);
+        buffer.writeLong(uuid.getMostSignificantBits());
+        buffer.writeLong(uuid.getLeastSignificantBits());
+        server.sendPluginMessage(new LegacyChannelIdentifier("petals:channel"), buffer.toByteArray());
 
         new PetalsGameImpl(uniqueId, this);
     }
