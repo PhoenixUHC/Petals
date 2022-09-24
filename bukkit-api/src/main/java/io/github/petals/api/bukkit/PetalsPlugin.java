@@ -21,7 +21,11 @@ public interface PetalsPlugin extends Plugin {
     /** @return the current game for this Bukkit server. */
     public static Optional<PetalsGame> game() {
         final PetalsPlugin plugin = PetalsPlugin.instance();
-        return plugin.game(plugin.gameId().orElse(null));
+
+        final String id = plugin.gameId().orElse(null);
+        if (id == null) return Optional.empty();
+
+        return plugin.game(id);
     }
 
     /** @return each game currently stored on the database. */
