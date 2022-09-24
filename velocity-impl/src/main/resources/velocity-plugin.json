@@ -1,0 +1,9 @@
+{
+    "id": "petals",
+    "name": "Petals",
+    "version": "0.1",
+    "authors": ["JanotLeLapin"],
+    "dependencies": [],
+    "main": "io.github.petals.velocity.PetalsPluginImpl"
+}
+
