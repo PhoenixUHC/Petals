@@ -8,6 +8,7 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 
 import io.github.petals.api.velocity.PetalsPlugin;
+import io.github.petals.api.velocity.structures.PetalsGame;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -28,10 +29,12 @@ public class PetalsCommand {
 
     private int createNode(CommandContext<CommandSource> ctx) {
         CommandSource src = ctx.getSource();
-        if (src instanceof Player) {
-            Player p = (Player) src;
-            plugin.createGame(p.getCurrentServer().get().getServer());
-        }
+        if (!(src instanceof Player)) return 0;
+
+        Player p = (Player) src;
+        PetalsGame game = plugin.createGame(p.getCurrentServer().get().getServer());
+        game.addPlayer(p.getUniqueId().toString()); // NOTE: Remove this
+
         return 1;
     }
 
