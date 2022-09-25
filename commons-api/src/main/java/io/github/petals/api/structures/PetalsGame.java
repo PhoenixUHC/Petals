@@ -10,7 +10,5 @@ public interface PetalsGame extends PetalsBase {
     long time();
     /** @return whether the game is running. */
     boolean running();
-    /** @return a set of players participating in the game. */
-    Set<PetalsBase> players();
 }
 

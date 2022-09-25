@@ -12,5 +12,8 @@ import io.github.petals.api.structures.PetalsBase;
 public interface PetalsPlayer extends PetalsBase {
     /** @return a Bukkit player object for this player. */
     Optional<Player> player();
+
+    /** @return the game associated with this player. */
+    PetalsGame game();
 }
 
