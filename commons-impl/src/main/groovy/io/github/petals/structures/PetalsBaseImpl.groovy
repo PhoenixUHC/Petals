@@ -33,6 +33,7 @@ class PetalsBaseImpl implements PetalsBase {
         if (name == "pooled") return this.pooled;
 
         String value = this.pooled.hget(this.uniqueId, name);
+        if (value == null) return null;
         if (value == "true") return true;
         if (value == "false") return false;
 
