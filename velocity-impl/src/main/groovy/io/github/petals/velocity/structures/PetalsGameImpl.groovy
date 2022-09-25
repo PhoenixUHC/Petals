@@ -1,5 +1,6 @@
-package io.github.petals.velocity.structures;
+package io.github.petals.velocity.structures
 
+import com.velocitypowered.api.proxy.server.RegisteredServer;
 import groovy.transform.CompileStatic;
 import static groovy.transform.TypeCheckingMode.*;
 
@@ -21,6 +22,11 @@ class PetalsGameImpl extends io.github.petals.structures.PetalsGameImpl implemen
     PetalsPlayerImpl addPlayer(String uniqueId) {
         super.addPlayer(uniqueId);
         new PetalsPlayerImpl(uniqueId, this.plugin);
+    }
+
+    @CompileStatic(SKIP)
+    Optional<RegisteredServer> server() {
+        return this.plugin.proxy().getServer(this.server);
     }
 }
 

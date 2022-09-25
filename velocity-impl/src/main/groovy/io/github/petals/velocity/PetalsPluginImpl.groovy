@@ -1,6 +1,11 @@
-package io.github.petals.velocity;
+package io.github.petals.velocity
 
-import groovy.transform.CompileStatic;
+import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
+import groovy.transform.CompileStatic
+import io.github.petals.api.velocity.structures.PetalsGame
+import io.github.petals.api.velocity.structures.PetalsPlayer
+import io.github.petals.velocity.structures.PetalsPlayerImpl
+
 import static groovy.transform.TypeCheckingMode.*;
 
 import java.util.logging.Logger;
@@ -34,12 +39,25 @@ class PetalsPluginImpl implements PetalsPlugin {
     }
 
     @Subscribe
-    void onProxyInitialization(ProxyInitializeEvent event) {
+    void onProxyInitialization(ProxyInitializeEvent e) {
         this.proxy.commandManager.register(new PetalsCommand(this).createPetalsCommand());
+    }
+
+    @Subscribe
+    void onPlayerInitServer(PlayerChooseInitialServerEvent e) {
+        def p = this.player(e.getPlayer().uniqueId.toString());
+        if (!p.isPresent()) return;
+
+        p.get().game().server().ifPresent(s -> e.setInitialServer(s));
     }
 
     Set<PetalsGameImpl> games() {
         new HashSet(pooled.smembers("games").collect { id -> new PetalsGameImpl(id, this) });
+    }
+
+    Optional<PetalsGameImpl> game(String uniqueId) {
+        PetalsGameImpl g = new PetalsGameImpl(uniqueId, this);
+        return g.exists() ? Optional.of(g) : Optional.empty();
     }
 
     @CompileStatic(SKIP)
@@ -48,7 +66,8 @@ class PetalsPluginImpl implements PetalsPlugin {
         String uniqueId = uuid.toString();
 
         PetalsGameImpl game = new PetalsGameImpl(uniqueId, this);
-        game.start = -1
+        game.start = -1;
+        game.server = server.serverInfo.name;
 
         pooled.sadd("games", uniqueId);
 
@@ -59,6 +78,11 @@ class PetalsPluginImpl implements PetalsPlugin {
         server.sendPluginMessage(new LegacyChannelIdentifier("petals:channel"), buffer.toByteArray());
 
         new PetalsGameImpl(uniqueId, this);
+    }
+
+    Optional<PetalsPlayerImpl> player(String uniqueId) {
+        PetalsPlayerImpl p = new PetalsPlayerImpl(uniqueId, this);
+        return p.exists() ? Optional.of(p) : Optional.empty();
     }
 
     JedisPooled pooled() {

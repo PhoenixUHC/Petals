@@ -3,6 +3,7 @@ package io.github.petals.api.bukkit;
 import java.util.Optional;
 import java.util.Set;
 
+import io.github.petals.api.bukkit.structures.PetalsPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -33,6 +34,8 @@ public interface PetalsPlugin extends Plugin {
 
     /** @return the game associated with the given uniqueId. */
     Optional<PetalsGame> game(String uniqueId);
+    /** @return the player associated with the given uniqueId. */
+    Optional<PetalsPlayer> player(String uniqueId);
 
     /** @return the current game identifier */
     Optional<String> gameId();

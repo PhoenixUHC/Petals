@@ -1,7 +1,7 @@
 package io.github.petals.bukkit;
 
-import groovy.transform.CompileStatic;
-
+import groovy.transform.CompileStatic
+import io.github.petals.bukkit.structures.PetalsPlayerImpl;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -9,8 +9,7 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import com.google.common.io.*;
 
 import io.github.petals.api.bukkit.PetalsPlugin;
-import io.github.petals.bukkit.structures.PetalsGameImpl;
-
+import io.github.petals.bukkit.structures.PetalsGameImpl
 import redis.clients.jedis.JedisPooled;
 
 @CompileStatic
@@ -28,7 +27,7 @@ class PetalsPluginImpl extends JavaPlugin implements PetalsPlugin, PluginMessage
     }
 
     void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
-        if (!channel.equals("petals:channel")) return;
+        if (channel != "petals:channel") return;
 
         ByteArrayDataInput buffer = ByteStreams.newDataInput(bytes);
         switch (buffer.readByte()) {
@@ -51,6 +50,12 @@ class PetalsPluginImpl extends JavaPlugin implements PetalsPlugin, PluginMessage
     Optional<PetalsGameImpl> game(String uniqueId) {
         PetalsGameImpl g = new PetalsGameImpl(uniqueId, pooled);
         return g.exists() ? Optional.of(g) : Optional.empty();
+    }
+
+    @Override
+    Optional<PetalsPlayerImpl> player(String uniqueId) {
+        PetalsPlayerImpl p = new PetalsPlayerImpl(uniqueId, pooled);
+        return p.exists() ? Optional.of(p) : Optional.empty();
     }
 }
 
