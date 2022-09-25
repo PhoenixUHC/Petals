@@ -10,8 +10,6 @@ import io.github.petals.api.structures.PetalsBase;
  * A Petals game representation in a Velocity proxy.
  */
 public interface PetalsGame extends PetalsBase {
-    /** @return whether the game is running. */
-    boolean running();
     /** @return a set of players participating in the game. */
     Set<PetalsPlayer> players();
     /**

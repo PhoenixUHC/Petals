@@ -1,9 +1,6 @@
 package io.github.petals.structures;
 
 import groovy.transform.CompileStatic;
-import static groovy.transform.TypeCheckingMode.*;
-
-import io.github.petals.structures.PetalsGameImpl
 
 import io.github.petals.api.structures.*;
 
@@ -21,14 +18,12 @@ class PetalsGameImpl extends PetalsBaseImpl implements PetalsGame {
         super(uniqueId, pooled);
     }
 
-    @CompileStatic(SKIP)
     long time() {
-        System.currentTimeMillis() - this.start;
+        System.currentTimeMillis() - Long.parseLong(this.pooled.hget(this.uniqueId(), "start"));
     }
 
-    @CompileStatic(SKIP)
     boolean running() {
-        this.start > -1;
+        Long.parseLong(this.pooled.hget(this.uniqueId(), "start")) > -1;
     }
 
     void delete() {
@@ -40,17 +35,8 @@ class PetalsGameImpl extends PetalsBaseImpl implements PetalsGame {
 
     Set<PetalsPlayerImpl> players() {
         new HashSet(
-            pooled.smembers("${this.uniqueId()}:players").collect { new PetalsPlayerImpl(uniqueId, this.pooled) }
+            pooled.smembers("${this.uniqueId()}:players").collect { new PetalsPlayerImpl(uniqueId(), this.pooled) }
         );
-    }
-
-    PetalsPlayerImpl addPlayer(String uniqueId) {
-        pooled.sadd("${this.uniqueId()}:players", uniqueId);
-        pooled.sadd("players", uniqueId);
-
-        pooled.hset(uniqueId, "game", this.uniqueId());
-
-        return new PetalsPlayerImpl(uniqueId, pooled);
     }
 }
 

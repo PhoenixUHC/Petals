@@ -20,8 +20,11 @@ class PetalsGameImpl extends io.github.petals.structures.PetalsGameImpl implemen
     }
 
     PetalsPlayerImpl addPlayer(String uniqueId) {
-        super.addPlayer(uniqueId);
-        new PetalsPlayerImpl(uniqueId, this.plugin);
+        pooled.sadd("${this.uniqueId()}:players", uniqueId);
+
+        pooled.hset(uniqueId, "game", this.uniqueId());
+
+        return new PetalsPlayerImpl(uniqueId, this.plugin);
     }
 
     @CompileStatic(SKIP)

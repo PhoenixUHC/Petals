@@ -29,12 +29,12 @@ class PetalsBaseImpl implements PetalsBase {
     }
 
     def getProperty(String name) {
-        if (name.equals("uniqueId")) return this.uniqueId;
-        if (name.equals("pooled")) return this.pooled;
+        if (name == "uniqueId") return this.uniqueId;
+        if (name == "pooled") return this.pooled;
 
         String value = this.pooled.hget(this.uniqueId, name);
-        if (value.equals("true")) return true;
-        if (value.equals("false")) return false;
+        if (value == "true") return true;
+        if (value == "false") return false;
 
         if (value.isNumber()) {
             if (value.contains(".")) return value.toDouble();
@@ -44,7 +44,7 @@ class PetalsBaseImpl implements PetalsBase {
     }
 
     void setProperty(String name, value) {
-        if (name.equals("uniqueId") || name.equals("pooled")) return;
+        if (name == "uniqueId" || name == "pooled") return;
 
         this.pooled.hset(this.uniqueId, name, String.valueOf(value));
     }

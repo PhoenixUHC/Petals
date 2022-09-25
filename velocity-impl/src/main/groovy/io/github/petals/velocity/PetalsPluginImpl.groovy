@@ -2,11 +2,7 @@ package io.github.petals.velocity
 
 import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
 import groovy.transform.CompileStatic
-import io.github.petals.api.velocity.structures.PetalsGame
-import io.github.petals.api.velocity.structures.PetalsPlayer
 import io.github.petals.velocity.structures.PetalsPlayerImpl
-
-import static groovy.transform.TypeCheckingMode.*;
 
 import java.util.logging.Logger;
 
@@ -57,17 +53,18 @@ class PetalsPluginImpl implements PetalsPlugin {
 
     Optional<PetalsGameImpl> game(String uniqueId) {
         PetalsGameImpl g = new PetalsGameImpl(uniqueId, this);
-        return g.exists() ? Optional.of(g) : Optional.empty();
+        return g.exists() ? Optional.of(g) : Optional.empty() as Optional<PetalsGameImpl>;
     }
 
-    @CompileStatic(SKIP)
     PetalsGameImpl createGame(RegisteredServer server) {
         UUID uuid = UUID.randomUUID();
         String uniqueId = uuid.toString();
 
         PetalsGameImpl game = new PetalsGameImpl(uniqueId, this);
-        game.start = -1;
-        game.server = server.serverInfo.name;
+        this.pooled.hset(uniqueId, [
+            start: "-1",
+            server: server.serverInfo.name,
+        ]);
 
         pooled.sadd("games", uniqueId);
 
@@ -82,7 +79,7 @@ class PetalsPluginImpl implements PetalsPlugin {
 
     Optional<PetalsPlayerImpl> player(String uniqueId) {
         PetalsPlayerImpl p = new PetalsPlayerImpl(uniqueId, this);
-        return p.exists() ? Optional.of(p) : Optional.empty();
+        return p.exists() ? Optional.of(p) : Optional.empty() as Optional<PetalsPlayerImpl>;
     }
 
     JedisPooled pooled() {
