@@ -61,6 +61,9 @@ public class PetalsCommand {
                     LiteralArgumentBuilder.<CommandSource>literal("create")
                         .then(RequiredArgumentBuilder.<CommandSource, String>argument("game", string()).executes(this::createNode))
                 )
+                .then(
+                    LiteralArgumentBuilder.<CommandSource>literal("start").executes(this::startNode)
+                )
                 .executes(this::statusNode)
                 .build()
         );
