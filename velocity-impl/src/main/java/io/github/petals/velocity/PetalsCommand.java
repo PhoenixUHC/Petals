@@ -1,5 +1,7 @@
 package io.github.petals.velocity;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -7,6 +9,7 @@ import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 
+import com.velocitypowered.api.proxy.messages.LegacyChannelIdentifier;
 import io.github.petals.api.velocity.PetalsPlugin;
 import io.github.petals.api.velocity.structures.PetalsGame;
 import net.kyori.adventure.text.Component;
@@ -34,6 +37,19 @@ public class PetalsCommand {
         Player p = (Player) src;
         PetalsGame game = plugin.createGame(p.getCurrentServer().get().getServer());
         game.addPlayer(p.getUniqueId().toString()); // NOTE: Remove this
+
+        return 1;
+    }
+
+    private int startNode(CommandContext<CommandSource> ctx) {
+        CommandSource src = ctx.getSource();
+        if (!(src instanceof Player)) return 0;
+
+        Player p = (Player) src;
+        p.getCurrentServer().get().sendPluginMessage(
+            new LegacyChannelIdentifier("petals:channel"),
+            new byte[]{1}
+        );
 
         return 1;
     }
