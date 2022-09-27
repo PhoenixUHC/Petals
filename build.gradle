@@ -59,9 +59,10 @@ subprojects {
         }
     }
 
+    def v = p.contains('velocity') ? 17 : 8
     java {
         toolchain {
-            languageVersion.set(JavaLanguageVersion.of(8))
+            languageVersion = JavaLanguageVersion.of(v)
         }
     }
 
