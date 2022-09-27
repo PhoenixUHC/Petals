@@ -38,7 +38,7 @@ class PetalsPluginImpl extends JavaPlugin implements PetalsPlugin, PluginMessage
     }
 
     void onDisable() {
-        this.games().each { it.delete() };
+        PetalsPlugin.game().ifPresent(g -> g.delete());
     }
 
     void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
