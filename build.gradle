@@ -63,6 +63,8 @@ subprojects {
     java {
         toolchain {
             languageVersion = JavaLanguageVersion.of(v)
+            vendor = JvmVendorSpec.ADOPTOPENJDK
+            implementation = JvmImplementation.J9
         }
     }
 
