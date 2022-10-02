@@ -71,13 +71,13 @@ class PetalsPluginImpl extends JavaPlugin implements PetalsPlugin, PluginMessage
 
     Optional<PetalsGameImpl> game(String uniqueId) {
         PetalsGameImpl g = new PetalsGameImpl(uniqueId, pooled);
-        return g.exists() ? Optional.of(g) : Optional.empty();
+        return (Optional<PetalsGameImpl>) (g.exists() ? Optional.of(g) : Optional.empty())
     }
 
     @Override
     Optional<PetalsPlayerImpl> player(String uniqueId) {
         PetalsPlayerImpl p = new PetalsPlayerImpl(uniqueId, pooled);
-        return p.exists() ? Optional.of(p) : Optional.empty();
+        return (Optional<PetalsPlayerImpl>) (p.exists() ? Optional.of(p) : Optional.empty())
     }
 }
 
