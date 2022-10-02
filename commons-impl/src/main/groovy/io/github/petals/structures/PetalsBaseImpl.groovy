@@ -44,28 +44,31 @@ class PetalsBaseImpl implements PetalsBase {
         return value
     }
 
-    void setProperty(String name, value) {
-        if (name == "uniqueId" || name == "pooled") return
+    void setProperty(String property, Object newValue) {
+        if (property == "uniqueId" || property == "pooled") return
 
-        this.pooled.hset(this.uniqueId, name, String.valueOf(value))
+        if (newValue == null)
+            this.pooled.hdel(this.uniqueId, property)
+        else
+            this.pooled.hset(this.uniqueId, property, String.valueOf(newValue))
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
     def asType(Class target) {
-        def res = target.getConstructor().newInstance()
-        res.metaClass = this.metaClass
+        def map = [:]
 
-        target.getDeclaredMethods().each {
-            def name = "${Character.toLowerCase(it.name.charAt(3))}${it.name.substring(4)}"
-            if (name != "metaClass") {
-                if (it.name.startsWith("get"))
-                    res.metaClass."${it.name}" = { this.getProperty(name) }
-                else if (it.name.startsWith("set"))
-                    res.metaClass."${it.name}" = { value -> this.setProperty(name, value)}
-            }
+        target.methods.each { m ->
+            if (m.name.startsWith("get") || m.name.startsWith("set")) {
+                def name = "${m.name.charAt(3).toLowerCase()}${m.name.substring(4)}"
+                if (m.name.startsWith("get")) map."$m.name" = {
+                    def v = this.getProperty(name)
+                    return v == null ? 0.asType(m.returnType) : v
+                }
+                else map."$m.name" = { Object[] args -> this.setProperty(name, args[0]) }
+            } else map."$m.name" = { Object[] args -> this.invokeMethod(m.name, args) }
         }
 
-        return res
+        return map.asType(target)
     }
 }
 
