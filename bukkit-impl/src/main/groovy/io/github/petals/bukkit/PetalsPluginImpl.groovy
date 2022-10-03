@@ -33,7 +33,9 @@ class PetalsPluginImpl extends JavaPlugin implements PetalsPlugin, PluginMessage
     }
 
     void onEnable() {
-        this.pooled = new JedisPooled("127.0.0.1", 6379);
+        def host = System.getenv("REDIS_HOST") ?: "127.0.0.1"
+        def port = System.getenv("REDIS_PORT") as int ?: 6379
+        this.pooled = new JedisPooled(host, port);
         this.server.messenger.registerIncomingPluginChannel(this, "petals:channel", this);
     }
 
